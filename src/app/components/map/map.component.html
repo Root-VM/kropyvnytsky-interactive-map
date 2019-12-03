@@ -1,0 +1,7 @@
+<div class="map" leaflet *ngIf="!!layers"
+     [leafletOptions]="options"
+     [leafletLayers]="layers"
+     (leafletClick)="getLocation($event)"
+></div>
+
+<button (click)="generateDistrict()" class="dist">Generate District</button>

@@ -1,0 +1,12 @@
+.map{
+  height: 100vh;
+  width: 100vw;
+}
+.active{
+  transition: .3s;
+  stroke: #222020;
+}
+
+.dist{
+  position: fixed; top: 4vh; left: 4vw; z-index: 99999; cursor: pointer;
+}
