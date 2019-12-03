@@ -1,5 +1,5 @@
 import {Component, HostListener, OnInit} from '@angular/core';
-import {latLng, tileLayer, polygon, marker, Map} from 'leaflet';
+import {latLng, tileLayer, polygon, marker, icon} from 'leaflet';
 import {HttpClient} from '@angular/common/http';
 
 @Component({
@@ -9,6 +9,14 @@ import {HttpClient} from '@angular/common/http';
 })
 export class MapComponent implements OnInit {
   layers = null;
+  icon = {
+    icon: icon({
+      iconSize: [ 25, 41 ],
+      iconAnchor: [ 13, 41 ],
+      iconUrl: 'assets/marker-icon.png',
+      shadowUrl: 'assets/marker-shadow.png'
+    })
+  };
   options = {
     layers: [
       tileLayer('https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png',
@@ -33,7 +41,7 @@ export class MapComponent implements OnInit {
       for (const item of (data as any)) {
         this.layers.push(polygon(item.layer, {color: item.color, weight: 1}));
         for (const school of item.school) {
-          this.layers.push(marker(school.location).bindPopup(`<p class="new">${school.fullName}</p>`));
+          this.layers.push(marker(school.location, this.icon).bindPopup(`<p class="new">${school.fullName}</p>`));
         }
       }
     });
@@ -44,7 +52,7 @@ export class MapComponent implements OnInit {
     console.clear();
     console.log(e.latlng.lat + ' , ' + e.latlng.lng);
     this.locationData.push([e.latlng.lat, e.latlng.lng])
-    this.layers.push(marker([e.latlng.lat, e.latlng.lng]));
+    this.layers.push(marker([e.latlng.lat, e.latlng.lng], this.icon));
   }
 
   @HostListener('mouseover', ['$event']) onHover(e) {
@@ -60,7 +68,7 @@ export class MapComponent implements OnInit {
   generateDistrict() {
     this.layers.push(polygon(this.locationData, {color: 'black', weight: 1}));
     console.clear();
-    console.log('district location: ', JSON.stringify(this.locationData))
+    console.log('district location- ', JSON.stringify(this.locationData))
     this.locationData = [];
   }
 }
